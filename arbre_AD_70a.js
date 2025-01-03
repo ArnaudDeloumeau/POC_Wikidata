@@ -72,6 +72,7 @@ var id_fichier = [];
 
 fileInput.addEventListener('change', function(e) {
 	var nb_files=e.target.files.length;
+
 	for (var i=0;i<nb_files;i++) {
 		handleCSVFile(e.target.files[i],function(data) {
 			csvData.push(data);
@@ -87,11 +88,11 @@ fileInput.addEventListener('change', function(e) {
 
 
 function Mise_a_jour(donnees,annee_liste,niv_top, val_box,nb_ss_niv,ss_niv_sup4,orig, niv_top_geo,val_box_geo,numero_jeux_donnees) {
-	
+
 
 	// identifier nombre de jeux de données dans le fichier
-	
-	
+
+
 	if (donnees[lig_min_data-1].length<liste_jeux_donnees[0][0]+1) {	// pas de donnnées
 		var nb_jeux_donnees=0;
 	} else {
@@ -106,10 +107,10 @@ function Mise_a_jour(donnees,annee_liste,niv_top, val_box,nb_ss_niv,ss_niv_sup4,
 				nb_jeux_donnees++;
 			}
 		}
-	}	
-	
+	}
+
 	// en cas de label similaires à 1 niveau d'écart, suppression du niveau en doublon ; si valeur non renseignée, vérifier que valeur n'est pas connue au-dessus ou en-dessous
-	
+
 	var vecteur_retour=choix_val_csv(donnees,annee_liste, niv_top, val_box,val_box_geo,niv_top_geo,liste_jeux_donnees,numero_jeux_donnees);
 	if (vecteur_retour[0][0] ==vecteur_retour[6][0][0] && vecteur_retour[6][0].length==1) {		// s'il y a un seul niveau 2 et que c'est le même que le niveau 1, on descend d'un cran
 		var data_values_temp="";
@@ -119,7 +120,7 @@ function Mise_a_jour(donnees,annee_liste,niv_top, val_box,nb_ss_niv,ss_niv_sup4,
 			if (vecteur_retour[7][0][0][annee_liste]!=="" && vecteur_retour[1][0][annee_liste]=="") {		// les valeurs sont inconnues pour le niveau bas : prendre celles du niveau haut.
 				index_sens=2;
 				var data_values_temp=vecteur_retour[7][0][0];
-			}			
+			}
 		} else {									// on descend de 2 crans
 			val_box=vecteur_retour[8][0][0];
 			if (vecteur_retour[1][0][annee_liste]!=="" && vecteur_retour[7][0][0][annee_liste]=="") {		// les valeurs sont inconnues pour le niveau bas : prendre celles du niveau haut.
@@ -138,7 +139,7 @@ function Mise_a_jour(donnees,annee_liste,niv_top, val_box,nb_ss_niv,ss_niv_sup4,
 	if (typeof vecteur_retour[18][0]!=="undefined" && typeof vecteur_retour[20][0]!=="undefined") {
 		if (vecteur_retour[18] ==vecteur_retour[20][0] && vecteur_retour[20].length==1) {		// s'il y a un seul niveau 2 et que c'est le même que le niveau 1, on descend d'un cran
 			if (orig==vecteur_retour[21][0]) {		// on est en train de remonter : remonter de 2 crans
-				val_box_geo=val_box_geo.substring(0,val_box_geo.lastIndexOf("."));	// si on clique en haut d'une boîte de niveau 1, on remonte d'un cran	
+				val_box_geo=val_box_geo.substring(0,val_box_geo.lastIndexOf("."));	// si on clique en haut d'une boîte de niveau 1, on remonte d'un cran
 			} else {									// on descend de 2 crans
 				val_box_geo=vecteur_retour[21][0];
 			}
@@ -146,7 +147,7 @@ function Mise_a_jour(donnees,annee_liste,niv_top, val_box,nb_ss_niv,ss_niv_sup4,
 			vecteur_retour=choix_val_csv(donnees,annee_liste, niv_top, val_box,val_box_geo,niv_top_geo,liste_jeux_donnees,numero_jeux_donnees);
 		}
 	}
-	
+
 	if (vecteur_retour[1][0][annee_liste]=="") {		// si pas de valeurs au niveau 1, on cherche au-dessus (attention, faire similaire à la descente si exemples concrets)
 		niv_top_temp=niv_top-1;
 		val_box_temp=val_box.substring(0,val_box.lastIndexOf("."));
@@ -155,10 +156,10 @@ function Mise_a_jour(donnees,annee_liste,niv_top, val_box,nb_ss_niv,ss_niv_sup4,
 			vecteur_retour[1]=vecteur_retour_temp[1];		// on prend les valeurs du niveau supérieur
 		}
 	}
-	
+
 	// détail du contenu des 3 niveaux
 
-	
+
 	var data_niv1_label=vecteur_retour[0];
 	var data_niv1_values=vecteur_retour[1];
 	var data_niv1_id=vecteur_retour[2];
@@ -200,7 +201,7 @@ function Mise_a_jour(donnees,annee_liste,niv_top, val_box,nb_ss_niv,ss_niv_sup4,
 			struct_niv3.push(String(data_niv3_label[i][j].length));
 		}
 	}
-	
+
 	// identifier nombre d'années dans le fichier
 	var nombre_an=0;
 	for (var i=liste_jeux_donnees[0][0];i<donnees[lig_min_data].length;i++) {
@@ -211,7 +212,7 @@ function Mise_a_jour(donnees,annee_liste,niv_top, val_box,nb_ss_niv,ss_niv_sup4,
 		}
 	}
 
-	
+
 	var boite_niv1=[];
 	var boite_niv1_bas_X=[];
 	var boite_niv1_bas_Y=[];
@@ -219,7 +220,7 @@ function Mise_a_jour(donnees,annee_liste,niv_top, val_box,nb_ss_niv,ss_niv_sup4,
 	var nb_niv2_prec=0;	// nombre de boîtes de niveau 2 pour décalage
 
 	for (var k=0 ;k<struct_niv1[1];k++) {
-		
+
 
 		if (data_niv1_type=="V") {
 			var texte_values_arr_niv1=' ';
@@ -236,7 +237,7 @@ function Mise_a_jour(donnees,annee_liste,niv_top, val_box,nb_ss_niv,ss_niv_sup4,
 			var valeur_select=object_select.value;
 			object_select.remove();
 		}
-		
+
 		if (typeof donnees[lig_min_data][liste_jeux_donnees[0][0]]!=='undefined') {
 			left_box_select=pos_select_X+ 'px';
 			top_box_select=pos_niv1_Y + 'px';
@@ -259,7 +260,7 @@ function Mise_a_jour(donnees,annee_liste,niv_top, val_box,nb_ss_niv,ss_niv_sup4,
 
 		for (var i=0 ;i<struct_niv2[1+2*k];i++) {
 			var rayon_niv2=rayon_niv2_min+Math.min(parseInt(struct_niv2[1+2*k]),10)/10*(rayon_niv2_max-rayon_niv2_min)
-			
+
 			if (donnees[0][2] == "Accueil" ) {		// si une de ces conditions : niveau 3 à représenter
 				var centerX = marge_bord+0.5*tableau_width['box_niv2_value']+(i+nb_niv2_prec)*(tableau_width['box_niv2_value']+ marge_bord);
 				var centerY = pos_niv2_Y;
@@ -284,7 +285,7 @@ function Mise_a_jour(donnees,annee_liste,niv_top, val_box,nb_ss_niv,ss_niv_sup4,
 				var centerX =pos.x;
 				var centerY =pos.y+(tableau_height['struct_niv2']);
 			}
-			
+
 			if (typeof data_niv2_values[k][i]=="undefined" || typeof data_niv1_values[k]=="undefined") {
 				var texte_values_arr_niv2='N/A';
 			} else if (JSON.stringify(data_niv2_values[k][i])==JSON.stringify([])) {
@@ -298,7 +299,7 @@ function Mise_a_jour(donnees,annee_liste,niv_top, val_box,nb_ss_niv,ss_niv_sup4,
 				var texte_values_arr_niv2=data_in_pourcent(data_niv2_values[k][i][annee_liste],data_niv1_values[k][annee_liste],data_type,liste_jeux_donnees);
 			}
 			var boite_niv2 =ajouterBoite_niv2(donnees,data_niv2_label[k][i],data_niv2_values[k][i],texte_values_arr_niv2,data_niv2_id[k][i],data_niv2_source[k][i],data_niv2_source_lien[k][i],nb_ss_niv,ss_niv_sup4,centerX,centerY,orig,annee_liste,nombre_an,liste_jeux_donnees,numero_jeux_donnees);
-			
+
 			boite_niv2_vecteur[i]=boite_niv2;
 			boite_niv2_haut_X[i]=boite_niv2[0];
 			boite_niv2_haut_Y[i]=boite_niv2[1];
@@ -309,13 +310,13 @@ function Mise_a_jour(donnees,annee_liste,niv_top, val_box,nb_ss_niv,ss_niv_sup4,
 			addline(boite_niv1_bas_X[k],boite_niv1_bas_Y[k], boite_niv2_haut_X[i],boite_niv2_haut_Y[i]);
 
 			if (nb_ss_niv==2 && ss_niv_sup4==0) {
-				
+
 				var nombre_boites=struct_niv3[2*nb_niv2_prec+1+2*i];
 				for (var j=0 ;j<nombre_boites;j++) {
-					
-					
-					// vérifier si sous-niveaux à afficher 
-					
+
+
+					// vérifier si sous-niveaux à afficher
+
 					var id_graph=data_niv3_id[k][i][j];
 					var id_graph_sous_niv=id_graph + '.1';
 					var tableau_id_graph=id_graph.split(".");
@@ -335,15 +336,15 @@ function Mise_a_jour(donnees,annee_liste,niv_top, val_box,nb_ss_niv,ss_niv_sup4,
 	}
 	if (donnees[0][1]!='') {
 		var [bas_niv1_geo_X,bas_niv1_geo_Y]=ajouterBoite_niv1_geo(donnees,data_niv1_geo_label,data_niv1_geo_id,left_box_niveau1,numero_jeux_donnees);
-	
+
 		var nombre_boites=data_niv2_geo_label.length;
 		for (var i=0;i<nombre_boites;i++) {
 			ajouterBoite_niv2_geo(donnees,data_niv2_geo_label[i],data_niv2_geo_id[i],i,bas_niv1_geo_X,pos_niv2_geo_Y,boite_niv2_bas_haut,nombre_boites,sous_niveau,orig,numero_jeux_donnees);
 		}
 	}
-	
+
 	// changement taille police
-	
+
 	for (var index_boite=0;index_boite<liste_boites_texte.length;index_boite++) {
 		var boites=document.querySelectorAll('.' +liste_boites_texte[index_boite]);
 		var taillePolice=15;
@@ -355,27 +356,27 @@ function Mise_a_jour(donnees,annee_liste,niv_top, val_box,nb_ss_niv,ss_niv_sup4,
 				} else {
 					break;
 				}
-			}       
+			}
 		});
-		boites.forEach((boite) => {	
+		boites.forEach((boite) => {
 			boite.style.fontSize = taillePolice + 1 + "px";
 			if (boite.offsetWidth < boite.scrollWidth || boite.offsetHeight < boite.scrollHeight) {
 				boite.style.fontSize = taillePolice + "px";
 			}
-		});		
+		});
 	}
-	
+
 }
 
 function ajouterBoite_niv1_geo(csv_vecteur,data_label,data_id,left_box_niv1,numero_jeux) {
 
 	// boîte pour label
-		
+
     var nouvelleBoite_geog = document.createElement('div');
     nouvelleBoite_geog.classList.add('box_geog_niv1');
 	nouvelleBoite_geog.style.backgroundColor = 'black'; // ou '#00FFFF'
 	nouvelleBoite_geog.style.color = 'white'; // nouvelleBoite_geog.style.fontWeight = 'bold';
-	
+
 
 	var centerX = left_box_niv1+tableau_width['box_niv1_value']+2*tableau_width['box_niv1_label']+0.5*tableau_width['box_geog_niv1'];
 	var centerY = pos_niv1_geo_Y ;
@@ -383,7 +384,7 @@ function ajouterBoite_niv1_geo(csv_vecteur,data_label,data_id,left_box_niv1,nume
 
     nouvelleBoite_geog.style.top = pos.y + 'px' ;  // position verticale
     nouvelleBoite_geog.style.left = pos.x -0.5*tableau_width['box_geog_niv1'] + 'px'; // position horizontale
-	
+
 	nouvelleBoite_geog.style.fontFamily = 'Verdana';
     nouvelleBoite_geog.style.textAlign = 'Center'; // ne semble pas marcher si mis en css
     nouvelleBoite_geog.style.fontSize = '1px';
@@ -392,10 +393,10 @@ function ajouterBoite_niv1_geo(csv_vecteur,data_label,data_id,left_box_niv1,nume
 	var texte_geog = document.createTextNode(data_label);
     nouvelleBoite_geog.appendChild(texte_geog); // afficher la valeur géographique
     document.body.appendChild(nouvelleBoite_geog);
-			
-	
+
+
 	// boîte pour lien
-	
+
 	var tableau_id=data_id.split(".");
 	var niv_top_geo = tableau_id.length;
 	if (niv_top_geo>1 || (switch_KPI_lieu==1 && csv_vecteur[0][0].lastIndexOf("_")!=-1)) {		// si niveau geo sup ou si changement de fichier quand switch geo / data
@@ -421,12 +422,12 @@ function ajouterBoite_niv1_geo(csv_vecteur,data_label,data_id,left_box_niv1,nume
 					var object_data = document.querySelector('.box_niv1_label');
 					var valeur_data=object_data.dataset.valeur;
 					var tableau_data=valeur_data.split(".");
-					var niveau_top_data = tableau_data.length;			
+					var niveau_top_data = tableau_data.length;
 					var valeur_geo = nouvelleBoite.dataset.valeur;
-					
+
 					var tableau_geo=valeur_geo.split(".");
 					var niveau_top_geo = tableau_geo.length;
-					valeur_geo=valeur_geo.substring(0,valeur_geo.lastIndexOf("."));	// si on clique en haut d'une boîte de niveau 1, on remonte d'un cran		
+					valeur_geo=valeur_geo.substring(0,valeur_geo.lastIndexOf("."));	// si on clique en haut d'une boîte de niveau 1, on remonte d'un cran
 					niveau_top_geo--;								// si on clique en haut d'une boîte de niveau 1, on remonte d'un cran
 					orig=nouvelleBoite.dataset.valeur;		// pour suivre d'où on vient
 					efface_boites();
@@ -434,13 +435,13 @@ function ajouterBoite_niv1_geo(csv_vecteur,data_label,data_id,left_box_niv1,nume
 					Mise_a_jour(csv_vecteur,col_annee,niveau_top_data, valeur_data,nb_sous_niv,sous_niv_sup4,orig,niveau_top_geo,valeur_geo,numero_jeux);
 				});
 			}
-		} else if (switch_KPI_lieu==1 && csv_vecteur[0][0].lastIndexOf("_")!=-1) {		// si on est au niveau 1, on remonte au fichier supérieur						
+		} else if (switch_KPI_lieu==1 && csv_vecteur[0][0].lastIndexOf("_")!=-1) {		// si on est au niveau 1, on remonte au fichier supérieur
 			nouvelleBoite.dataset.valeur=csv_vecteur[0][0].substring(0,csv_vecteur[0][0].length-2);
 			var boites=[nouvelleBoite_geog,nouvelleBoite];
 			for (var i=0;i<boites.length;i++) {
-				
+
 				orig=csv_vecteur[0][0].substring(csv_vecteur[0][0].lastIndexOf("_")+1);
-				boites[i].addEventListener('click', function() {			
+				boites[i].addEventListener('click', function() {
 					if (document.querySelector('.box_select')!=null) {
 						num_jeux=numero_jeux;
 						var object_select = document.querySelector('.box_select');
@@ -459,24 +460,24 @@ function ajouterBoite_niv1_geo(csv_vecteur,data_label,data_id,left_box_niv1,nume
 						var object_geo = document.querySelector('.box_geog_niv1');
 						valeur_geo=object_geo.dataset.valeur;
 						var tableau_geo=valeur_geo.split(".");
-						var niveau_top_geo = tableau_geo.length;			
+						var niveau_top_geo = tableau_geo.length;
 					} else {
 						valeur_geo='G0';
 						niveau_top_geo=1;
 					}
 					var valeur = nouvelleBoite.dataset.valeur;
-					orig =valeur;			// pour suivre d'où on vient			
+					orig =valeur;			// pour suivre d'où on vient
 					var tableau=valeur.split(".");
 					var niveau_top = tableau.length;
 					valeur=valeur.substring(0,valeur.length-2);
-					
+
 					// on remet les data à gauche et geo à droite
-					
+
 					switch_KPI_lieu=0;
 					var temp=col_deb_label; col_deb_label=col_deb_geo;col_deb_geo=temp;
 					var temp=valeur; valeur=valeur_geo;valeur_geo=temp;
 					var temp=niveau_top; niveau_top=niveau_top_geo;niveau_top_geo=temp;
-			
+
 					var jeu_donnees=this.dataset.valeur;
 					var jeu_donnees_racine=jeu_donnees.substring(0,jeu_donnees.lastIndexOf("_"));
 					var jeu_donnees_niveau=jeu_donnees.substring(1+jeu_donnees.lastIndexOf("_"),jeu_donnees.length);
@@ -498,15 +499,15 @@ function ajouterBoite_niv1_geo(csv_vecteur,data_label,data_id,left_box_niv1,nume
 							break
 						}
 					}
-				});			
+				});
 			}
 		}
-		
-		document.body.appendChild(nouvelleBoite); 	
+
+		document.body.appendChild(nouvelleBoite);
 	}
-	
+
 	// boîte pour flèches switch
-	
+
     var nouvelleBoite = document.createElement('div');
 	nouvelleBoite.classList.add('switch_KPI_geog');
 	nouvelleBoite.style.top = pos.y + 'px' ;  // position verticale
@@ -533,7 +534,7 @@ function ajouterBoite_niv1_geo(csv_vecteur,data_label,data_id,left_box_niv1,nume
 			var object_geo = document.querySelector('.box_geog_niv1');
 			valeur_geo=object_geo.dataset.valeur;
 			var tableau_geo=valeur_geo.split(".");
-			var niveau_top_geo = tableau_geo.length;			
+			var niveau_top_geo = tableau_geo.length;
 		} else {
 			valeur_geo='G0';
 			niveau_top_geo=1;
@@ -544,20 +545,20 @@ function ajouterBoite_niv1_geo(csv_vecteur,data_label,data_id,left_box_niv1,nume
 		var niveau_top = tableau_id.length;
 
 		// inversion lieux et data : changement numéros de colonnes
-		
+
 		var temp=col_deb_label; col_deb_label=col_deb_geo;col_deb_geo=temp;
 		var temp=valeur; valeur=valeur_geo;valeur_geo=temp;
 		var temp=niveau_top; niveau_top=niveau_top_geo;niveau_top_geo=temp;
-		
+
 		efface_boites();
 		var [niveau_top, valeur,nb_sous_niv,sous_niv_sup4,valeur_geo,niveau_top_geo]=nb_sous_niveaux(csv_vecteur,valeur,valeur_geo);
 		Mise_a_jour(csv_vecteur,col_annee,niveau_top, valeur,nb_sous_niv,sous_niv_sup4, orig,niveau_top_geo,valeur_geo,num_jeux);
 	});
-	
-	
+
+
 	document.body.appendChild(nouvelleBoite);
-	
-	
+
+
 	return[centerX,centerY];
 }
 
@@ -569,13 +570,13 @@ function ajouterBoite_niv2_geo(csv_vecteur,data_label,data_id,i,niv2_X, niv2_Y,n
 	var angle = Math.PI;
 	var rayon_geo=rayon_geo_min+Math.min(nb_boites,10)/10*(rayon_geo_max-rayon_geo_min)
 	var pos = getPosition(angle + (2*i+1) * angleStep, rayon_geo, niv2_X, niv2_Y);
-	
+
 	// boîte pour label
-	
+
     var nouvelleBoite_label = document.createElement('div');
 	nouvelleBoite_label.style.backgroundColor = '#D9D9D9';
 	nouvelleBoite_label.style.color = 'black';
-	
+
 
 	nouvelleBoite_label.classList.add('box_geog_niv2');
 	nouvelleBoite_label.style.top = pos.y +'px' ;  // position verticale
@@ -583,28 +584,28 @@ function ajouterBoite_niv2_geo(csv_vecteur,data_label,data_id,i,niv2_X, niv2_Y,n
 	nouvelleBoite_label.style.fontFamily = 'Verdana';
 	nouvelleBoite_label.style.textAlign = 'Center'; // ne semble pas marcher si mis en css
 	nouvelleBoite_label.style.fontSize = '1px';
-    
+
 	var texte_niv2_geo_label = document.createTextNode(data_label);
-	var span_niv2_geo_label = document.createElement('span'); 
-	span_niv2_geo_label.classList.add('couleur_label'); 
-	span_niv2_geo_label.appendChild(texte_niv2_geo_label); 
+	var span_niv2_geo_label = document.createElement('span');
+	span_niv2_geo_label.classList.add('couleur_label');
+	span_niv2_geo_label.appendChild(texte_niv2_geo_label);
 
 	nouvelleBoite_label.appendChild(span_niv2_geo_label);
 
     document.body.appendChild(nouvelleBoite_label);
 
-	
+
 	// boîte pour lien
 
     var nouvelleBoite = document.createElement('div');
 	nouvelleBoite.classList.add('lien_niv2_geo');
 	nouvelleBoite.style.top = pos.y -15 + 'px' ;  // position verticale
-	nouvelleBoite.style.left = pos.x  -0.5*tableau_width['lien_niv2_geo'] +'px'; // position horizontale  
+	nouvelleBoite.style.left = pos.x  -0.5*tableau_width['lien_niv2_geo'] +'px'; // position horizontale
 	nouvelleBoite.dataset.valeur=data_id;
 	var boites=[nouvelleBoite_label,nouvelleBoite];
 	for (var i=0;i<boites.length;i++) {
 		boites[i].addEventListener('click', function() {
-			
+
 			var num_jeux=numero_jeux;
 			var object_select = document.querySelector('.box_select');
 			valeur_select=object_select.value;
@@ -635,7 +636,7 @@ function ajouterBoite_niv2_geo(csv_vecteur,data_label,data_id,i,niv2_X, niv2_Y,n
 			Mise_a_jour(csv_vecteur,col_annee,niveau_top_data, valeur_data,nb_sous_niv,sous_niv_sup4,orig,niveau_top_geo,valeur_geo,num_jeux);
 		});
 	}
-	
+
 	document.body.appendChild(nouvelleBoite);
 }
 
@@ -643,8 +644,8 @@ function ajouterBoite_niv2_geo(csv_vecteur,data_label,data_id,i,niv2_X, niv2_Y,n
 
 
 function ajouterBoite_niv1(csv_vecteur,i, data_label, data_values,txt_data,txt_id,data_source,data_source_lien,struct_niv2,struct_niv3,nb_ss_niv,ss_niv_sup4,ori,col_annee,nb_an,liste_jeux,numero_jeux) {
-		
-	
+
+
 	var centerX_niv2=[];
 	var rayon_niv3=[];
 	if (nb_ss_niv==2 && ss_niv_sup4==0) {	// si ces 2 conditions : niveau 3 à représenter
@@ -671,7 +672,7 @@ function ajouterBoite_niv1(csv_vecteur,i, data_label, data_values,txt_data,txt_i
 		}
 	}
 	if (csv_vecteur[0][2]!=='Accueil' && centerX<pos_select_X+2*(tableau_width['box_select'])+0.5*(tableau_width['box_niv1_value'])) {		// box_select trop à gauche
-		
+
 		for (var j1=0;j1<centerX_niv2.length;j1++) {
 			centerX_niv2[j1]=(pos_select_X+2*(tableau_width['box_select'])+0.5*(tableau_width['box_niv1_value']))/centerX*centerX_niv2[j1];		// on décale les centres de niveau 2 par homothétie
 		}
@@ -681,7 +682,7 @@ function ajouterBoite_niv1(csv_vecteur,i, data_label, data_values,txt_data,txt_i
 	var centerY = pos_niv1_Y ;
 	var pos = { x:centerX, y:centerY };
 	var left_box_niv1=pos.x-0.5*(tableau_width['box_niv1_value']);
-	
+
 	// boîte pour label
 
     var nouvelleBoite_label = document.createElement('div');
@@ -691,7 +692,7 @@ function ajouterBoite_niv1(csv_vecteur,i, data_label, data_values,txt_data,txt_i
 	if (data_values[liste_jeux_donnees[0][0]-1]=="C") {		// si la valeur a été calculée, on met le texte en italique
 		nouvelleBoite_label.style.fontStyle = 'italic';
 	}
-	
+
 	var texte_niv1_label = document.createTextNode(data_label);
 	nouvelleBoite_label.appendChild(texte_niv1_label);
 	if (ori=='debut' || ori==txt_id) {
@@ -700,18 +701,18 @@ function ajouterBoite_niv1(csv_vecteur,i, data_label, data_values,txt_data,txt_i
 	if (csv_vecteur[0][2]=="Structure" || csv_vecteur[0][2]=="Accueil") {	// page structure
 		nouvelleBoite_label.classList.add('struct_niv1');
 		nouvelleBoite_label.style.top = pos.y -0.5*(tableau_height['struct_niv1'])-tableau_border['struct_niv1']+ 'px' ;  // position verticale
-		nouvelleBoite_label.style.left = pos.x -0.5*(tableau_width['struct_niv1']) + 'px'; // position horizontale  			
+		nouvelleBoite_label.style.left = pos.x -0.5*(tableau_width['struct_niv1']) + 'px'; // position horizontale
 	} else if (txt_data==" ") {	// ventilation : ovale
 		nouvelleBoite_label.classList.add('ovale_niv1');
 		nouvelleBoite_label.style.top = pos.y -0.5*(tableau_height['ovale_niv1'])-tableau_border['ovale_niv1']+ 'px' ;  // position verticale
-		nouvelleBoite_label.style.left = pos.x -0.5*(tableau_width['ovale_niv1']) + 'px'; // position horizontale    	
+		nouvelleBoite_label.style.left = pos.x -0.5*(tableau_width['ovale_niv1']) + 'px'; // position horizontale
 	} else {
 		nouvelleBoite_label.classList.add('box_niv1_label');
 		nouvelleBoite_label.style.top = pos.y -0.5*(tableau_height['box_niv1_label']+tableau_height['box_niv1_value'])-tableau_border['box_niv1_value']+ 'px' ;  // position verticale
-		nouvelleBoite_label.style.left = pos.x -0.5*(tableau_width['box_niv1_label']) + 'px'; // position horizontale    
+		nouvelleBoite_label.style.left = pos.x -0.5*(tableau_width['box_niv1_label']) + 'px'; // position horizontale
 		nouvelleBoite_label.dataset.valeur=txt_id;		// également pour label (en plus de lien), pour les cas où il n'y a pas de lien (niveau 1)
 	}
-	
+
 	var boite_niv1=nouvelleBoite_label;
 
 	// boîte pour value
@@ -729,10 +730,10 @@ function ajouterBoite_niv1(csv_vecteur,i, data_label, data_values,txt_data,txt_i
 		if (data_values[liste_jeux_donnees[0][0]-1]=="C") {		// si la valeur a été calculée, on met le texte en italique
 			nouvelleBoite_value.style.fontStyle = 'italic';
 		}
-		
-		if (liste_jeux_donnees[0].length==1) {	// si un seul jeu de données, une seule boîte pour valeur et unité	
+
+		if (liste_jeux_donnees[0].length==1) {	// si un seul jeu de données, une seule boîte pour valeur et unité
 			nouvelleBoite_value.classList.add('box_niv1_value');
-			var texte_niv1_value = document.createTextNode(txt_data + ' ' + liste_jeux[1][0]);		
+			var texte_niv1_value = document.createTextNode(txt_data + ' ' + liste_jeux[1][0]);
 		} else {				// si plusieurs jeux de données, on sépare la valeur de l'unité et on met une liste déroulante
 			nouvelleBoite_value.classList.add('box_niv1_value_seul');
 			var texte_niv1_value = document.createTextNode(txt_data);
@@ -758,9 +759,9 @@ function ajouterBoite_niv1(csv_vecteur,i, data_label, data_values,txt_data,txt_i
 			} else {
 				creation_liste_der(csv_vecteur,unite,left_box_select,top_box_select,liste_unites,'box_niv1_unite',liste_der_unites_choix);
 			}
-			
+
 		}
-		
+
 		nouvelleBoite_value.appendChild(texte_niv1_value);
 		var boite_niv1=nouvelleBoite_value;
 	}
@@ -769,10 +770,10 @@ function ajouterBoite_niv1(csv_vecteur,i, data_label, data_values,txt_data,txt_i
 		var boites=[nouvelleBoite_label,nouvelleBoite_value];
 	} else {
 		var boites=[nouvelleBoite_label];
-	}	
+	}
 	if (csv_vecteur[0][2]!="Structure" && csv_vecteur[0][2]!="Accueil") {	// page avec données
 		for (var i_boites=0;i_boites<boites.length;i_boites++) {
-			boites[i_boites].addEventListener('click', function() {		
+			boites[i_boites].addEventListener('click', function() {
 				var src=data_source;
 				var src_lien=data_source_lien;
 				var data_lab=data_label;
@@ -804,21 +805,21 @@ function ajouterBoite_niv1(csv_vecteur,i, data_label, data_values,txt_data,txt_i
 			});
 		}
 	}
-	
+
     document.body.appendChild(nouvelleBoite_label);
 	if (txt_data!=" ") {	// (si ce n'est pas une ventilation)
 		document.body.appendChild(nouvelleBoite_value);
-	}	
-	
+	}
+
 	// boîte pour lien
 
 	var tableau_id=txt_id.split(".");
 	var niv_top = tableau_id.length;
 
-	
-		
+
+
 	if  (niv_top>1 || (switch_KPI_lieu==0 && csv_vecteur[0][0].lastIndexOf("_")!=-1)) {					// un niveau au-dessus dans le fichier ou un fichier supérieur : on fait un lien vers le haut
-		
+
 		var nouvelleBoite_lien = document.createElement('div');
 		if  (niv_top>1) {					// on remonte dans les niveaux supérieurs en restant dans le fichier
 			nouvelleBoite_lien.classList.add('lien_niv1');
@@ -851,28 +852,28 @@ function ajouterBoite_niv1(csv_vecteur,i, data_label, data_values,txt_data,txt_i
 						var object_geo = document.querySelector('.box_geog_niv1');
 						valeur_geo=object_geo.dataset.valeur;
 						var tableau_geo=valeur_geo.split(".");
-						var niveau_top_geo = tableau_geo.length;			
+						var niveau_top_geo = tableau_geo.length;
 					} else {
 						valeur_geo='G0';
 						niveau_top_geo=1;
 					}
 					var valeur = nouvelleBoite_lien.dataset.valeur;
-					orig =valeur;			// pour suivre d'où on vient			
+					orig =valeur;			// pour suivre d'où on vient
 					var tableau=valeur.split(".");
 					var niveau_top = tableau.length;
-					valeur=valeur.substring(0,valeur.length-2);	// si on clique en haut d'une boîte de niveau 1, on remonte d'un cran		
-					niveau_top--;								// si on clique en haut d'une boîte de niveau 1, on remonte d'un cran		
+					valeur=valeur.substring(0,valeur.length-2);	// si on clique en haut d'une boîte de niveau 1, on remonte d'un cran
+					niveau_top--;								// si on clique en haut d'une boîte de niveau 1, on remonte d'un cran
 					efface_boites();
 					var [niveau_top, valeur,nb_sous_niv,sous_niv_sup4,valeur_geo,niveau_top_geo]=nb_sous_niveaux(csv_vecteur,valeur,valeur_geo);
 					Mise_a_jour(csv_vecteur,col_annee,niveau_top, valeur,nb_sous_niv,sous_niv_sup4, orig,niveau_top_geo,valeur_geo,num_jeux);
 				});
 			}
-			
+
 		} else if (csv_vecteur[0][0].lastIndexOf("_")!=-1) {							// si on est au niveau 1, on remonte au fichier supérieur
 			nouvelleBoite_lien.classList.add('lien_niv1_accueil');
 			nouvelleBoite_lien.dataset.valeur=csv_vecteur[0][0].substring(0,csv_vecteur[0][0].length-2);
 			nouvelleBoite_lien.style.left = pos.x -0.5*tableau_width['lien_niv1_accueil']+'px'; // position horizontale
-			
+
 			orig=csv_vecteur[0][0].substring(csv_vecteur[0][0].lastIndexOf("_")+1);
 			if (csv_vecteur[0][2]=="Structure") {	// page structure
 				nouvelleBoite_lien.style.top = pos.y -0.5*(tableau_height['struct_niv1'])-tableau_border['box_niv1_value'] - 4 -tableau_height['lien_niv1_accueil'] + 'px' ;  // position verticale
@@ -897,7 +898,7 @@ function ajouterBoite_niv1(csv_vecteur,i, data_label, data_values,txt_data,txt_i
 								} else {
 									break
 								}
-							}				
+							}
 							var colonne_an=liste_jeux_donnees[0][0]+nb_an-1;
 							efface_boites();
 							var [niveau_top_data, jeu_donnees_niveau,nb_sous_niv,sous_niv_sup4,valeur_geo,niveau_top_geo]=nb_sous_niveaux(csvData[j],jeu_donnees_niveau,'G0');
@@ -937,41 +938,41 @@ function ajouterBoite_niv2(csv_vecteur,data_label,data_values,txt_v,txt_id,data_
 	if (csv_vecteur[0][2]=="Structure" || csv_vecteur[0][2]=="Accueil") {	// page structure
 		nouvelleBoite_label.classList.add('struct_niv2');
 		nouvelleBoite_label.style.top = pos.y -0.5*(tableau_height['struct_niv2'])-tableau_border['struct_niv2']+ 'px' ;  // position verticale
-		nouvelleBoite_label.style.left = pos.x -0.5*(tableau_width['struct_niv2']) + 'px'; // position horizontale   	
+		nouvelleBoite_label.style.left = pos.x -0.5*(tableau_width['struct_niv2']) + 'px'; // position horizontale
 	} else if (txt_v==" ") {	// ventilation : ovale
 		nouvelleBoite_label.classList.add('ovale_niv2');
 		nouvelleBoite_label.style.top = pos.y -0.5*(tableau_height['ovale_niv2'])-tableau_border['ovale_niv2']+ 'px' ;  // position verticale
-		nouvelleBoite_label.style.left = pos.x -0.5*(tableau_width['ovale_niv2']) + 'px'; // position horizontale    	
+		nouvelleBoite_label.style.left = pos.x -0.5*(tableau_width['ovale_niv2']) + 'px'; // position horizontale
 	} else {			// données : rectangle
 		nouvelleBoite_label.classList.add('box_niv2_label');
 		nouvelleBoite_label.style.top = pos.y -0.5*(tableau_height['box_niv2_label']+tableau_height['box_niv2_value'])-tableau_border['box_niv2_value']+ 'px' ;  // position verticale
-		nouvelleBoite_label.style.left = pos.x -0.5*(tableau_width['box_niv2_label']) + 'px'; // position horizontale    
+		nouvelleBoite_label.style.left = pos.x -0.5*(tableau_width['box_niv2_label']) + 'px'; // position horizontale
 	}
-	
 
 
 
-	// boîte pour value 
+
+	// boîte pour value
 
 	if (txt_v!=" ") {	// (si ce n'est pas une ventilation)
 		var nouvelleBoite_value = document.createElement('div');
 		nouvelleBoite_value.classList.add('box_niv2_value');
 		nouvelleBoite_value.style.top = pos.y +0.5*(tableau_height['box_niv2_label'] - tableau_height['box_niv2_value'])+ 'px' ;  // position verticale
-		nouvelleBoite_value.style.left = pos.x -0.5*(tableau_width['box_niv2_value'])+ 'px'; // position horizontale    
+		nouvelleBoite_value.style.left = pos.x -0.5*(tableau_width['box_niv2_value'])+ 'px'; // position horizontale
 		nouvelleBoite_value.style.fontFamily = 'Arial';
 		nouvelleBoite_value.style.textAlign = 'Center'; // ne semble pas marcher si mis en css
 		nouvelleBoite_value.style.fontSize = '1px';
 		if (data_values[liste_jeux_donnees[0][0]-1]=="C") {		// si la valeur a été calculée, on met le texte en italique
 			nouvelleBoite_value.style.fontStyle = 'italic';
-		}		
+		}
 		if (ori==txt_id) {
 			nouvelleBoite_value.style.backgroundColor = '#E2EFDA';
 		}
-		
+
 		var texte_niv2_value = document.createTextNode('\n'+ txt_v);
-		var span_niv2_value = document.createElement('span'); 
-		span_niv2_value.classList.add('couleur_value'); 
-		span_niv2_value.appendChild(texte_niv2_value);	
+		var span_niv2_value = document.createElement('span');
+		span_niv2_value.classList.add('couleur_value');
+		span_niv2_value.appendChild(texte_niv2_value);
 
 		nouvelleBoite_value.appendChild(span_niv2_value);
 	}
@@ -981,10 +982,10 @@ function ajouterBoite_niv2(csv_vecteur,data_label,data_values,txt_v,txt_id,data_
 		var boites=[nouvelleBoite_label,nouvelleBoite_value];
 	// } else {
 		// var boites=[nouvelleBoite_label];
-	}	
+	}
 	if (csv_vecteur[0][2]!="Structure" && csv_vecteur[0][2]!="Accueil" && txt_v!==" ") {	// page avec données
 		for (var i_boites=0;i_boites<boites.length;i_boites++) {
-			boites[i_boites].addEventListener('click', function() {		
+			boites[i_boites].addEventListener('click', function() {
 				var src=data_source;
 				var src_lien=data_source_lien;
 				var data_lab=data_label;
@@ -1016,32 +1017,32 @@ function ajouterBoite_niv2(csv_vecteur,data_label,data_values,txt_v,txt_id,data_
 			});
 		}
 	}
-	
+
     document.body.appendChild(nouvelleBoite_label);
 	if (txt_v!=" ") {	// (si ce n'est pas une ventilation)
 		document.body.appendChild(nouvelleBoite_value);
 		niv2_bas_X=nouvelleBoite_value.offsetLeft + nouvelleBoite_value.offsetWidth/2;
-		niv2_bas_Y=nouvelleBoite_value.offsetTop + nouvelleBoite_value.offsetHeight;		
+		niv2_bas_Y=nouvelleBoite_value.offsetTop + nouvelleBoite_value.offsetHeight;
 	}	else {
 		niv2_bas_X=nouvelleBoite_label.offsetLeft + nouvelleBoite_label.offsetWidth/2;
 		niv2_bas_Y=nouvelleBoite_label.offsetTop + nouvelleBoite_label.offsetHeight;
 	}
-	
+
 	niv2_haut_X=nouvelleBoite_label.offsetLeft + nouvelleBoite_label.offsetWidth/2;
-	niv2_haut_Y=nouvelleBoite_label.offsetTop;	
-	
+	niv2_haut_Y=nouvelleBoite_label.offsetTop;
+
 	var boite_niv2=[niv2_haut_X,niv2_haut_Y,niv2_bas_X,niv2_bas_Y];
-	
+
 
 	// boîte pour texte déroulant (page d'accueil)
 
 	if (csv_vecteur[0][2]=='Accueil') {
 		var nouvelleBoite_titre_der = document.createElement('div');
-		
+
 		nouvelleBoite_titre_der.classList.add('box_texte_der');
 		nouvelleBoite_titre_der.style.top = pos.y +0.5*(tableau_height['box_niv2_label'] + tableau_height['box_niv2_value'])+ 0.5*tableau_height['box_niv2_value']+ 'px' ;  // position verticale
 		nouvelleBoite_titre_der.style.left = pos.x -0.5*(tableau_width['box_niv2_value']) +'px'; // position horizontale
-		
+
 		var texte_der_niv2_titre = document.createElement('p');
 		texte_der_niv2_titre.style.textAlign = 'center';
 		texte_der_niv2_titre.innerHTML = 'Exemples'+ '<br>';
@@ -1064,14 +1065,14 @@ function ajouterBoite_niv2(csv_vecteur,data_label,data_values,txt_v,txt_id,data_
 		}
 
 		nouvelleBoite_der.appendChild(texte_der_niv2);
-		
+
 		document.body.appendChild(nouvelleBoite_titre_der);
-		document.body.appendChild(nouvelleBoite_der);	
+		document.body.appendChild(nouvelleBoite_der);
 	}
-	
+
 	// boîte pour lien
-	
-	
+
+
 	var donnee_id=csv_vecteur[0][0] + "_" + txt_id;
 	var existe_sous_fichier=0;
 	for (var i=0;i<csvData.length;i++) {
@@ -1087,17 +1088,17 @@ function ajouterBoite_niv2(csv_vecteur,data_label,data_values,txt_v,txt_id,data_
 		nouvelleBoite_lien.style.left = pos.x -0.5*tableau_width['lien_niv2_accueil']+'px'; // position horizontale
 		if (csv_vecteur[0][2]=='Accueil') {
 			nouvelleBoite_lien.style.top = pos.y +0.5*tableau_height['box_niv2_label'] + tableau_height['box_niv2_value']+tableau_height['box_texte_der']+ 30 + 'px' ;  // position verticale
-			var boites=[nouvelleBoite_label,nouvelleBoite_der,nouvelleBoite_titre_der,nouvelleBoite_lien];	
+			var boites=[nouvelleBoite_label,nouvelleBoite_der,nouvelleBoite_titre_der,nouvelleBoite_lien];
 		} else {
 			nouvelleBoite_lien.style.top = pos.y +0.5*tableau_height['struct_niv2'] + 0.5*tableau_height['lien_niv2_accueil']+ 'px' ;  // position verticale
 			var boites=[nouvelleBoite_label,nouvelleBoite_lien];
 		}
 		for (var i=0;i<boites.length;i++) {
 			boites[i].addEventListener('click', function() {
-				var num_jeux=numero_jeux;					
+				var num_jeux=numero_jeux;
 				var jeu_donnees=nouvelleBoite_lien.dataset.valeur;
-				orig="V0";						
-				for (var j=0;j<csvData.length;j++) {		// on parcourt les différents fichiers			
+				orig="V0";
+				for (var j=0;j<csvData.length;j++) {		// on parcourt les différents fichiers
 					if (csvData[j][0][0] ==jeu_donnees) {
 						// identifier nombre d'années dans le fichier
 						nb_an=0;
@@ -1107,12 +1108,12 @@ function ajouterBoite_niv2(csv_vecteur,data_label,data_values,txt_v,txt_id,data_
 							} else {
 								break
 							}
-						}					
+						}
 						var colonne_an=liste_jeux_donnees[0][0]+nb_an-1;
 						efface_boites();
 						var [niveau_top_data, jeu_donnees_niveau,nb_sous_niv,sous_niv_sup4,valeur_geo,niveau_top_geo]=nb_sous_niveaux(csvData[j],"V0",'G0');
 						Mise_a_jour(csvData[j],colonne_an,'1',"V0",nb_sous_niv,sous_niv_sup4,orig,'1','G0',num_jeux);
-						break					
+						break
 					}
 				}
 			});
@@ -1125,7 +1126,7 @@ function ajouterBoite_niv2(csv_vecteur,data_label,data_values,txt_v,txt_id,data_
 			nouvelleBoite_lien.style.top = pos.y +0.5*(tableau_height['box_niv2_label'] + tableau_height['box_niv2_value'])+ 0.5*tableau_height['box_niv2_value']+ 'px' ;  // position verticale
 			nouvelleBoite_lien.style.left = pos.x - 4 +'px'; // position horizontale
 			nouvelleBoite_lien.dataset.valeur=txt_id;
-			
+
 			if (nb_ss_nv==2 && ss_nv_sup4==1) {		// plus de 4 boîtes de niveau 2 et niveaux 3 existent (pas forcément partout) : chercher si niveau 3 pour mettre un lien
 				for (var row=lig_min_data+1;row<csv_vecteur.length-1;row++) {
 					if (csv_vecteur[row][col_deb_label+txt_id.length+1]==txt_id + '.1') {  // attention : pas de niveau +1 sous toutes les boîtes
@@ -1138,7 +1139,7 @@ function ajouterBoite_niv2(csv_vecteur,data_label,data_values,txt_v,txt_id,data_
 			if (nb_ss_nv==1 || (nb_ss_nv==2 && ss_nv_sup4==1 && lien_niv2==0)) {		// si pas de données en-dessous on met un lien carré (pour pouvoir afficher la donnée de niveau 3 en haut, pour pouvoir switcher avec la géographie
 				nouvelleBoite_lien.classList.add('lien_niv3_carre');
 			}
-				
+
 			if (csv_vecteur[0][2]=="Accueil") {	// page structure
 				var boites=[nouvelleBoite_label,nouvelleBoite_der,nouvelleBoite_titre_der,nouvelleBoite_lien];
 			} else if (csv_vecteur[0][2]=="Structure" || txt_v==" ") {	// page structure ou si c'est une ventilation
@@ -1171,7 +1172,7 @@ function ajouterBoite_niv2(csv_vecteur,data_label,data_values,txt_v,txt_id,data_
 						valeur_geo='G0';
 						niveau_top_geo=1;
 					}
-					
+
 					var valeur = nouvelleBoite_lien.dataset.valeur;
 					orig=valeur;		// pour suivre d'où on vient
 					var tableau=valeur.split(".");
@@ -1181,10 +1182,10 @@ function ajouterBoite_niv2(csv_vecteur,data_label,data_values,txt_v,txt_id,data_
 					Mise_a_jour(csv_vecteur,col_annee,niveau_top, valeur,nb_sous_niv,sous_niv_sup4,orig,niveau_top_geo,valeur_geo,num_jeux);
 				});
 			}
-			document.body.appendChild(nouvelleBoite_lien);	
+			document.body.appendChild(nouvelleBoite_lien);
 		}
 	}
-	
+
 
 	return(boite_niv2);
 }
@@ -1198,50 +1199,50 @@ function ajouterBoite_niv3(csv_vecteur,data_label,data_values,data_id,data_sourc
 	var angle = Math.PI;
 	var rayon_niv3=rayon_niv3_min+Math.min(nb_boites,10)/10*(rayon_niv3_max-rayon_niv3_min)
 	var pos = getPosition(angle + (2*j+1) * angleStep, rayon_niv3, niv2_X, niv2_Y);
-	
+
 	// boîte pour label
-	
+
     var nouvelleBoite_label = document.createElement('div');
 	nouvelleBoite_label.style.fontSize = '1px';
 	nouvelleBoite_label.style.textAlign = 'Center'; // ne semble pas marcher si mis en css
 	nouvelleBoite_label.style.fontFamily = 'Arial';
 	if (data_values[liste_jeux_donnees[0][0]-1]=="C") {		// si la valeur a été calculée, on met le texte en italique
 		nouvelleBoite_label.style.fontStyle = 'italic';
-	}	
+	}
 
 	if (csv_vecteur[0][2]=="Structure" || csv_vecteur[0][2]=="Accueil") {	// page structure
 		nouvelleBoite_label.classList.add('struct_niv3');
 		nouvelleBoite_label.style.top = pos.y -0.5*(tableau_height['struct_niv3'])-tableau_border['struct_niv3']+ 'px' ;  // position verticale
-		nouvelleBoite_label.style.left = pos.x -0.5*(tableau_width['struct_niv3']) + 'px'; // position horizontale  	
+		nouvelleBoite_label.style.left = pos.x -0.5*(tableau_width['struct_niv3']) + 'px'; // position horizontale
 	} else if (JSON.stringify(data_values)==JSON.stringify([])) {	// ventilation : ovale
 		nouvelleBoite_label.classList.add('ovale_niv3');
 		nouvelleBoite_label.style.top = pos.y -0.5*(tableau_height['ovale_niv3'])-tableau_border['ovale_niv3']+ 'px' ;  // position verticale
-		nouvelleBoite_label.style.left = pos.x -0.5*(tableau_width['ovale_niv3']) + 'px'; // position horizontale    
+		nouvelleBoite_label.style.left = pos.x -0.5*(tableau_width['ovale_niv3']) + 'px'; // position horizontale
 	} else {						// données : rectangle
 		nouvelleBoite_label.classList.add('box_niv3_label');
 		nouvelleBoite_label.style.top = pos.y -0.5*(tableau_height['box_niv3_label']+tableau_height['box_niv3_value'])-tableau_border['box_niv3_value'] +'px' ;  // position verticale
-		nouvelleBoite_label.style.left = pos.x -0.5*(tableau_width['box_niv3_value'])+ 'px'; // position horizontale    
+		nouvelleBoite_label.style.left = pos.x -0.5*(tableau_width['box_niv3_value'])+ 'px'; // position horizontale
 		if (ori==data_id) {
 			nouvelleBoite_label.style.backgroundColor = '#E2EFDA';
 		}
 	}
-    
+
 	var texte_niv3_label = document.createTextNode(data_label);
-	var span_niv3_label = document.createElement('span'); 
-	span_niv3_label.classList.add('couleur_label'); 
-	span_niv3_label.appendChild(texte_niv3_label); 
+	var span_niv3_label = document.createElement('span');
+	span_niv3_label.classList.add('couleur_label');
+	span_niv3_label.appendChild(texte_niv3_label);
 
 	nouvelleBoite_label.appendChild(span_niv3_label);
 
 
 	// boîte pour value
-	
+
 	if (JSON.stringify(data_values)!=JSON.stringify([])) {	// (si ce n'est pas une ventilation)
 		var nouvelleBoite_value = document.createElement('div');
 		nouvelleBoite_value.classList.add('box_niv3_value');
 
 		// basculer valeurs en pourcentage
-		
+
 		var texte_values_arr_niv3=[];
 		var data_type="";
 		if (data_values[col_nb_ratio]=='ratio' || csv_vecteur[lig_min_data-2][col_annee]=='ratio') {
@@ -1253,20 +1254,20 @@ function ajouterBoite_niv3(csv_vecteur,data_label,data_values,data_id,data_sourc
 			texte_values_arr_niv3.push(data_in_pourcent(data_values[col_annee],data_values_niv2[col_annee],data_type,liste_jeux));
 		}
 		nouvelleBoite_value.style.top = pos.y +0.5*(tableau_height['box_niv3_label'] - tableau_height['box_niv3_value'])+ 'px' ;  // position verticale
-		nouvelleBoite_value.style.left = pos.x -0.5*(tableau_width['box_niv3_value'])+ 'px'; // position horizontale    
+		nouvelleBoite_value.style.left = pos.x -0.5*(tableau_width['box_niv3_value'])+ 'px'; // position horizontale
 		nouvelleBoite_value.style.fontFamily = 'Arial';
 		nouvelleBoite_value.style.textAlign = 'Center'; // ne semble pas marcher si mis en css
 		nouvelleBoite_value.style.fontSize = '1px';
 		if (data_values[liste_jeux_donnees[0][0]-1]=="C") {		// si la valeur a été calculée, on met le texte en italique
 			nouvelleBoite_value.style.fontStyle = 'italic';
-		}		
+		}
 		if (ori==data_id) {
 			nouvelleBoite_value.style.backgroundColor = '#E2EFDA';
 		}
 		var texte_niv3_value = document.createTextNode('\n'+ texte_values_arr_niv3);
-		var span_niv3_value = document.createElement('span'); 
-		span_niv3_value.classList.add('couleur_value'); 
-		span_niv3_value.appendChild(texte_niv3_value);	
+		var span_niv3_value = document.createElement('span');
+		span_niv3_value.classList.add('couleur_value');
+		span_niv3_value.appendChild(texte_niv3_value);
 		nouvelleBoite_value.appendChild(span_niv3_value);
 	}
 	if (JSON.stringify(data_values)!=JSON.stringify([])) {
@@ -1276,7 +1277,7 @@ function ajouterBoite_niv3(csv_vecteur,data_label,data_values,data_id,data_sourc
 	}
 	if (csv_vecteur[0][2]!="Structure" && csv_vecteur[0][2]!="Accueil") {	// page avec données
 		for (var i_boites=0;i_boites<boites.length;i_boites++) {
-			boites[i_boites].addEventListener('click', function() {			
+			boites[i_boites].addEventListener('click', function() {
 				var src=data_source;
 				var src_lien=data_source_lien;
 				var data_lab=data_label;
@@ -1308,22 +1309,22 @@ function ajouterBoite_niv3(csv_vecteur,data_label,data_values,data_id,data_sourc
 			});
 		}
 	}
-	
+
 	document.body.appendChild(nouvelleBoite_label);
-	
+
 	var nouvelleBoite_haut_X=nouvelleBoite_label.offsetLeft + nouvelleBoite_label.offsetWidth/2;
 	var nouvelleBoite_haut_Y=nouvelleBoite_label.offsetTop;
 	var niv2_bas_X=niv2_bas_haut[2];
 	var niv2_bas_Y=niv2_bas_haut[3];
 
-	addline(niv2_bas_X[i], niv2_bas_Y[i],nouvelleBoite_haut_X,nouvelleBoite_haut_Y);	
+	addline(niv2_bas_X[i], niv2_bas_Y[i],nouvelleBoite_haut_X,nouvelleBoite_haut_Y);
 	if (JSON.stringify(data_values)!=JSON.stringify([])) {
 		document.body.appendChild(nouvelleBoite_value);
 	}
-	
+
   	var boite_niveau3=nouvelleBoite_value;
 
-  
+
 	// boîte pour lien
 
 	// on cherche d'abord s'il y a un sous-fichier sur lequel renvoyer
@@ -1348,8 +1349,8 @@ function ajouterBoite_niv3(csv_vecteur,data_label,data_values,data_id,data_sourc
 		for (var i=0;i<boites.length;i++) {
 			boites[i].addEventListener('click', function() {
 				var num_jeux=numero_jeux;
-				var jeu_donnees=nouvelleBoite_lien.dataset.valeur;				
-				for (var j=0;j<csvData.length;j++) {		// on parcourt les différents fichiers			
+				var jeu_donnees=nouvelleBoite_lien.dataset.valeur;
+				for (var j=0;j<csvData.length;j++) {		// on parcourt les différents fichiers
 					if (csvData[j][0][0] ==jeu_donnees) {
 						// identifier nombre d'années dans le fichier
 						nb_an=0;
@@ -1364,7 +1365,7 @@ function ajouterBoite_niv3(csv_vecteur,data_label,data_values,data_id,data_sourc
 						efface_boites();
 						var [niveau_top_data, jeu_donnees_niveau,nb_sous_niv,sous_niv_sup4,valeur_geo,niveau_top_geo]=nb_sous_niveaux(csvData[j],"V0",'G0');
 						Mise_a_jour(csvData[j],colonne_an,'1',"V0",nb_sous_niv,sous_niv_sup4,orig,'1','G0',num_jeux);
-						break					
+						break
 					}
 				}
 			});
@@ -1372,9 +1373,9 @@ function ajouterBoite_niv3(csv_vecteur,data_label,data_values,data_id,data_sourc
 		document.body.appendChild(nouvelleBoite_lien);
 	} else {
 		var nouvelleBoite_lien = document.createElement('div');
-		
+
 		nouvelleBoite_lien.style.top = pos.y + 0.5*(tableau_height['box_niv3_label'] + tableau_height['box_niv3_value'])+ 0.5*tableau_height['box_niv3_value']+ 'px' ;  // position verticale
-		nouvelleBoite_lien.style.left = pos.x - 4 +'px'; // position horizontale   
+		nouvelleBoite_lien.style.left = pos.x - 4 +'px'; // position horizontale
 		nouvelleBoite_lien.dataset.valeur=data_id;
 
 
@@ -1421,16 +1422,16 @@ function ajouterBoite_niv3(csv_vecteur,data_label,data_values,data_id,data_sourc
 				efface_boites();
 				var [niveau_top, valeur,nb_sous_niv,sous_niv_sup4,valeur_geo,niveau_top_geo]=nb_sous_niveaux(csv_vecteur,valeur,valeur_geo);
 				Mise_a_jour(csv_vecteur,col_annee,niveau_top, valeur,nb_sous_niv,sous_niv_sup4,orig,niveau_top_geo,valeur_geo,num_jeux);
-			});		
+			});
 		}
-		document.body.appendChild(nouvelleBoite_lien);	
+		document.body.appendChild(nouvelleBoite_lien);
 	}
 	return(boite_niveau3);
 }
 
 // ajoute une ligne entre les points 1(x1, y1) et 2 (x2, y2)
 
-function addline(x1, y1, x2, y2) {	
+function addline(x1, y1, x2, y2) {
 
   	// Crée un élément de ligne HTML
 	var line = document.createElement('hr');
@@ -1462,7 +1463,7 @@ function handleCSVFile(file, callback) {
 	encoding: "ISO-8859-1",
     complete: function(results) {
       // Une fois le fichier CSV traité, vous pouvez accéder aux données dans results.data
-		callback(results.data);	
+		callback(results.data);
     }
   });
 }
@@ -1473,20 +1474,20 @@ function choix_val_csv(csv_vecteur,colonne_annee, niv_tp, val,val_geo,niv_tp_geo
 	var tab_data=val.split(".");
 	var niv_tp = tab_data.length;
 	var nb_pts=niv_tp-1;
-	
+
 	var tab_data_geo=val_geo.split(".");
 	var niv_tp_geo = tab_data_geo.length;
 	var nb_pts_geo=niv_tp_geo-1;
-	
+
 	// pour les pages accueil et structure, rajouter les "V" et "G0"
-	
+
 	if (csv_vecteur[0][2]=="Structure" || csv_vecteur[0][2]=="Accueil") {	// page structure
 		for (var row=lig_min_data+1;row<csv_vecteur.length-1;row++) {
 			csv_vecteur[row][col_deb_geo+1]="G0";
 			csv_vecteur[row][liste_jeux_donnees[0][0]-1]="V";
 		}
 	}
-	
+
 	// détail du contenu des 3 niveaux
 
 	var data_niv1_label=[];
@@ -1495,14 +1496,14 @@ function choix_val_csv(csv_vecteur,colonne_annee, niv_tp, val,val_geo,niv_tp_geo
 	var data_niv1_type=[];
 	var data_niv1_source=[];
 	var data_niv1_source_lien=[];
-	
+
 	var data_niv2_label=[];
 	var data_niv2_id=[];
 	var data_niv2_values=[];
 	var data_niv2_type=[];
 	var data_niv2_source=[];
 	var data_niv2_source_lien=[];
-	
+
 	var data_niv3_label=[];
 	var data_niv3_id=[];
 	var data_niv3_values=[];
@@ -1512,13 +1513,13 @@ function choix_val_csv(csv_vecteur,colonne_annee, niv_tp, val,val_geo,niv_tp_geo
 
 	var data_niv1_geo_label=[];
 	var data_niv1_geo_id=[];
-	
+
 	var data_niv2_geo_label=[];
 	var data_niv2_geo_id=[];
 
 	var long_val=val.length;
 	var long_val_geo=val_geo.length;
-	
+
 	var csv_vecteur_filtre=[];
 	var row_filtre=0;
 	var nb_data_max=Math.min(num_data_max,niv_tp+2);
@@ -1531,11 +1532,11 @@ function choix_val_csv(csv_vecteur,colonne_annee, niv_tp, val,val_geo,niv_tp_geo
 			}
 		}
 	}
-	
+
 	id_niv1=0;
-	
+
 	// RECHERCHE DES DONNEES DE NIVEAU 1
-	
+
 	for (var row=0;row<csv_vecteur_filtre.length;row++) {
 		if (csv_vecteur_filtre[row][col_deb_label+1+2*(nb_pts+1)]=="" && csv_vecteur_filtre[row][col_deb_geo+1+2*(nb_pts_geo+1)]=="") {
 			data_niv1_label[0]=csv_vecteur_filtre[row][col_deb_label+2*nb_pts];
@@ -1555,7 +1556,7 @@ function choix_val_csv(csv_vecteur,colonne_annee, niv_tp, val,val_geo,niv_tp_geo
 					}
 				}
 			}
-				
+
 			data_niv2_label[0]=[];
 			data_niv2_id[0]=[];
 			data_niv2_type[0]=[];
@@ -1571,12 +1572,12 @@ function choix_val_csv(csv_vecteur,colonne_annee, niv_tp, val,val_geo,niv_tp_geo
 			break;		// au cas où il y aurait 2 fois la même ligne
 			}
 		}
-		
+
 		// RECHERCHE DES DONNEES DE NIVEAU 2
 
 	for (var row=0;row<csv_vecteur_filtre.length;row++) {
 		if (csv_vecteur_filtre[row][col_deb_label+1+2*(nb_pts+1)]!="" && csv_vecteur_filtre[row][col_deb_label+1+2*(nb_pts+2)]=="" && csv_vecteur_filtre[row][col_deb_geo+1+2*(nb_pts_geo+1)]=="") {
-		
+
 			var data_niv2=false;
 			for (var id_niv2=0;id_niv2<data_niv2_label[0].length;id_niv2++) {
 				if (data_niv2_label[0][id_niv2]==csv_vecteur_filtre[row][col_deb_label+2+2*(niv_tp-1)]) {	// donnée de niveau 2 déjà dans data_niv2_label
@@ -1605,16 +1606,16 @@ function choix_val_csv(csv_vecteur,colonne_annee, niv_tp, val,val_geo,niv_tp_geo
 							data_niv2_values[0][id_niv2][i_annees]=csv_vecteur_filtre[row][i_annees];
 						}
 					}
-				}				
+				}
 			}
 		}
 	}
-				
+
 		// RECHERCHE DES DONNEES DE NIVEAU 3
 
 	for (var row=0;row<csv_vecteur_filtre.length;row++) {
 		if (csv_vecteur_filtre[row][col_deb_label+1+2*(nb_pts+2)]!="" && csv_vecteur_filtre[row][col_deb_label+1+2*(nb_pts+3)]=="" && csv_vecteur_filtre[row][col_deb_geo+1+2*(nb_pts_geo+1)]=="") {
-		
+
 			data_niv2=false;	// on doit retrouver le niv2 correspondant
 			for (var id_niv2=0;id_niv2<data_niv2_label[0].length;id_niv2++) {
 				if (data_niv2_label[0][id_niv2]==csv_vecteur_filtre[row][col_deb_label+2*(nb_pts+1)]) {	// donnée de niveau 2 retrouvée
@@ -1622,7 +1623,7 @@ function choix_val_csv(csv_vecteur,colonne_annee, niv_tp, val,val_geo,niv_tp_geo
 					break;
 				}
 			}
-			
+
 			if (typeof data_niv3_label[id_niv1][id_niv2]!=="undefined") {
 				var data_niv3=false;
 				for (var id_niv3=0;id_niv3<data_niv3_label[id_niv1][id_niv2].length;id_niv3++) {
@@ -1646,14 +1647,14 @@ function choix_val_csv(csv_vecteur,colonne_annee, niv_tp, val,val_geo,niv_tp_geo
 								data_niv3_values[0][id_niv2][id_niv3][i_annees]=csv_vecteur_filtre[row][i_annees];
 							}
 						}
-					}					
+					}
 				}
 			}
 		}
 	}
 
 	// RECHERCHE DES DONNEES GEOGRAPHIQUES
-	
+
 	for (var row=0;row<csv_vecteur_filtre.length;row++) {
 		if (csv_vecteur_filtre[row][col_deb_label+2*(nb_pts+1)]=='' && csv_vecteur_filtre[row][col_deb_geo+2*(nb_pts_geo+1)]!='') {		// si c'est une ligne avec les données de niv1 + un 2ème niveau de données géographique
 			var data_niv2_geo=false;
@@ -1669,7 +1670,7 @@ function choix_val_csv(csv_vecteur,colonne_annee, niv_tp, val,val_geo,niv_tp_geo
 			}
 		}
 	}
-	
+
 	if (JSON.stringify(data_niv1_values[0])==JSON.stringify([])) {
 		var [data_niv1_label_ord,data_niv1_values_ord,data_niv1_id_ord,data_niv1_type_ord,data_niv1_source_ord,data_niv1_source_lien_ord,data_niv2_label_ord,data_niv2_values_ord,data_niv2_id_ord,data_niv2_type_ord,data_niv2_source_ord,data_niv2_source_lien_ord,data_niv3_label_ord,data_niv3_values_ord,data_niv3_id_ord,data_niv3_type_ord,data_niv3_source_ord,data_niv3_source_lien_ord]=[data_niv1_label,data_niv1_values,data_niv1_id,data_niv1_type,data_niv1_source,data_niv1_source_lien,data_niv2_label,data_niv2_values,data_niv2_id,data_niv2_type,data_niv2_source,data_niv2_source_lien,data_niv3_label,data_niv3_values,data_niv3_id,data_niv3_type,data_niv3_source,data_niv3_source_lien];
 	} else {
@@ -1678,32 +1679,32 @@ function choix_val_csv(csv_vecteur,colonne_annee, niv_tp, val,val_geo,niv_tp_geo
 	}
 	for (var i=0;i<data_niv2_label_ord.length;i++) {
 		if (JSON.stringify(data_niv2_values[i][0])==JSON.stringify([])) {
-			
+
 		} else {
 			var vecteur_classement=data_niv2_values[i].map(subArray => subArray[colonne_annee]);
 			[data_niv2_label_ord[i],data_niv2_values_ord[i],data_niv2_id_ord[i],data_niv2_type_ord[i],data_niv2_source_ord[i],data_niv2_source_lien_ord[i],data_niv3_label_ord[i],data_niv3_values_ord[i],data_niv3_id_ord[i],data_niv3_type_ord[i],data_niv3_source_ord[i],data_niv3_source_lien_ord[i]]=data_ord(vecteur_classement,[data_niv2_label[i],data_niv2_values[i],data_niv2_id[i],data_niv2_type[i],data_niv2_source[i],data_niv2_source_lien[i],data_niv3_label[i],data_niv3_values[i],data_niv3_id[i],data_niv3_type[i],data_niv3_source[i],data_niv3_source_lien[i]]);
 		}
-		
+
 		for (var j=0;j<data_niv3_label_ord[i].length;j++) {
 			if (JSON.stringify(data_niv3_values[i][j][0])==JSON.stringify([])) {
-				
+
 			} else {
 				var vecteur_classement=data_niv3_values[i][j].map(subArray => subArray[colonne_annee]);
 				[data_niv3_label_ord[i][j],data_niv3_values_ord[i][j],data_niv3_id_ord[i][j],data_niv3_type_ord[i][j],data_niv3_source_ord[i][j],data_niv3_source_lien_ord[i][j]]=data_ord(vecteur_classement,[data_niv3_label[i][j],data_niv3_values[i][j],data_niv3_id[i][j],data_niv3_type[i][j],data_niv3_source[i][j],data_niv3_source_lien[i][j]]);
 			}
 		}
 	}
-	
+
 	var vecteur_ret=[data_niv1_label_ord,data_niv1_values_ord,data_niv1_id_ord,data_niv1_type_ord,data_niv1_source_ord,data_niv1_source_lien_ord,data_niv2_label_ord,data_niv2_values_ord,data_niv2_id_ord,data_niv2_type_ord,data_niv2_source_ord,data_niv2_source_lien_ord,data_niv3_label_ord,data_niv3_values_ord,data_niv3_id_ord,data_niv3_type_ord,data_niv3_source_ord,data_niv3_source_lien_ord,data_niv1_geo_label,val_geo,data_niv2_geo_label,data_niv2_geo_id];
 	return vecteur_ret;
-}			
+}
 
 
 // la fonction qui calcule les coordonnées X et Y d'un point sur l'arc de cercle
-    
-function getPosition(angle, ray,ctrX,ctrY) {	
 
-  
+function getPosition(angle, ray,ctrX,ctrY) {
+
+
   var x = ctrX + ray * Math.cos(angle);
   var y = ctrY - ray * Math.sin(angle);
 
@@ -1719,10 +1720,10 @@ function getPosition(angle, ray,ctrX,ctrY) {
 		return texte_values_arr;
 	} else if (typeof val=="undefined") {
 		var texte_values_arr="N/A";
-		return texte_values_arr;		
+		return texte_values_arr;
 	} else {
 
-		var texte_values_nbr = parseFloat(val.replace(',', '.'));						
+		var texte_values_nbr = parseFloat(val.replace(',', '.'));
 		var texte_values_nbr_str=texte_values_nbr.toString();
 		if (texte_values_nbr<-1000 || texte_values_nbr>1000) {
 			var texte_values_arr=texte_values_nbr.toFixed(0);
@@ -1737,13 +1738,13 @@ function getPosition(angle, ray,ctrX,ctrY) {
 		  useGrouping: true,
 		};
 		texte_values_arr = parseFloat(texte_values_arr).toLocaleString('fr-FR', options);
-				
+
 	var texte_values_arr_str=texte_values_arr.toString();
 	var texte_values_arr_str=texte_values_arr_str.replace('.', ',');
 	return texte_values_arr_str + val.substring(texte_values_nbr_str.length,val.length);
 	}
  }
- 
+
  function data_in_pourcent(val, total,type,liste_jx) {
 	if (val==' ' || val=='') {
 		var texte_values_arr="?";
@@ -1778,15 +1779,15 @@ function getPosition(angle, ray,ctrX,ctrY) {
 
 // fonction qui classe les vecteurs contenus dans "vecteur", en prenant l'ordre du vecteur numéro "num"
 function data_ord(vect_classement,vecteur) {
-	
+
 	// var vect_class = vecteur[num].slice();
-	
+
 	for (var i=0;i<vect_classement.length;i++) {
-		if (vect_classement[i]!=' ' && typeof vect_classement[i]!="undefined") {		// si ce n'est pas un niveau de ventilation	
+		if (vect_classement[i]!=' ' && typeof vect_classement[i]!="undefined") {		// si ce n'est pas un niveau de ventilation
 			vect_classement[i] = parseFloat(vect_classement[i].replace(',', '.'));
 		}
 	}
-		
+
 	for (var i=0;i<vect_classement.length;i++) {
 		for (var j=0;j<vect_classement.length-i-1;j++) {
 			if (typeof vect_classement[j]=="undefined" || vect_classement[j]<vect_classement[j+1]) {
@@ -1802,7 +1803,7 @@ function data_ord(vect_classement,vecteur) {
 			}
 		}
 	}
-	
+
 	return vecteur;
 }
 
@@ -1812,7 +1813,7 @@ function data_ord(vect_classement,vecteur) {
 function nb_sous_niveaux(csv_vecteur,id,id_geo) {
 
 	// vérifier si sous-niveaux à afficher et si sous-niveau 1 a plus de 4 données
-	
+
 	var id_sous_niv1=id + '.1';
 	var id_sous_niv1_sup4=id + '.4';
 	var sous_niveau_sup4=0;
@@ -1829,14 +1830,14 @@ function nb_sous_niveaux(csv_vecteur,id,id_geo) {
 
 	var sous_niveau=0;
 	var ventil=0;
-	
+
 	// Finalement on accepte de représenter les ventilations en niveau 1 (sinon impossible de descendre quand on ne représente que 2 niveaux cause 4 ventils de niveau 1
 /* 	if (csv_vecteur[0][2]!="Structure" && csv_vecteur[0][2]!="Accueil") {
 		for (var row=lig_min_data+1;row<csv_vecteur.length-1;row++) {
 			if (csv_vecteur[row][col_id]==id && csv_vecteur[row][col_id+1]=="" && csv_vecteur[row][col_id_geo]==id_geo && csv_vecteur[row][col_id_geo+1]=="") {
 				if (csv_vecteur[row][liste_jeux_donnees[0][0]-1]=="V") {		// si c'est une ventilation, on remonte d'un cran (sélection en fonction du fait qu'on soit en données ou en géographie (pas de ventilation en géographie)
 					if (id.substring(0,1)=="V") {			// si on regarde bien en donnée
-						var id=id.substring(0,id.length-2);		
+						var id=id.substring(0,id.length-2);
 						var id_sous_niv1=id + '.1';
 						var id_sous_niv1_sup4=id + '.4';
 						var sous_niveau_sup4=0;
@@ -1849,7 +1850,7 @@ function nb_sous_niveaux(csv_vecteur,id,id_geo) {
 					} else if (id.substring(0,2)=="G0" && id_geo.substring(0,2)=="V0"){		// si on est en géographie
 						var id_geo=id_geo.substring(0,id_geo.length-2);
 						var tableau_id_geo=id_geo.split(".");
-						var niv_top_geo = tableau_id_geo.length;						 
+						var niv_top_geo = tableau_id_geo.length;
 						var col_id_geo =col_deb_geo - 1 + 2*niv_top_geo;
 					}
 				}
@@ -1857,7 +1858,7 @@ function nb_sous_niveaux(csv_vecteur,id,id_geo) {
 			}
 		}
 	}
- */	
+ */
 	for (var row=lig_min_data+1;row<csv_vecteur.length-1;row++) {
 		if (csv_vecteur[row][col_sous_niv1]==id_sous_niv1) {
 			sous_niveau=1;
@@ -1865,9 +1866,9 @@ function nb_sous_niveaux(csv_vecteur,id,id_geo) {
 		if (csv_vecteur[row][col_sous_niv1]==id_sous_niv1_sup4) {
 			sous_niveau_sup4=1;
 			break;
-		}		
+		}
 	}
-	
+
 	for (var row=lig_min_data+1;row<csv_vecteur.length-1;row++) {
 		if (csv_vecteur[row][col_sous_niv2].substring(0,id.length)==id && csv_vecteur[row][col_sous_niv2].length==id.length+4) {
 			sous_niveau=2;
@@ -1894,7 +1895,7 @@ function creation_liste_der(csv_vecteur, val_select,left_box,top_box,liste_selec
 			option.value=liste_select[i_liste];
 			option.text=liste_select[i_liste];
 			liste_data.appendChild(option);
-		}		
+		}
 	}
 
 	liste_data.style.top= top_box;
@@ -1902,7 +1903,7 @@ function creation_liste_der(csv_vecteur, val_select,left_box,top_box,liste_selec
 	liste_data.style.fontSize = '18px';
 	liste_data.style.fontWeight = 550;
 	liste_data.style.textAlign = 'Center'; // ne semble pas marcher si mis en css
-	
+
 	liste_data.value=val_select;
 	document.body.appendChild(liste_data);
 
@@ -1932,7 +1933,7 @@ function ecouteur_liste_der_unites_choix() {
 	var valeur_geo=valeur_geo_object.dataset.valeur;
 	var tableau_geo=valeur_geo.split(".");
 	var niveau_top_geo = tableau_geo.length;
-	
+
 	var niv1_unite_val=liste_der_unites_choix.value;
 	var num_jeux=0;
 	for (var i=0;i<liste_jeux_donnees[0].length;i++) {
@@ -1952,7 +1953,7 @@ function ecouteur_liste_der_unites_choix() {
 	var [niv_box1, niv1_val,nb_sous_niv,sous_niv_sup4,valeur_geo,niveau_top_geo]=nb_sous_niveaux(csv_vect,niv1_val,valeur_geo);
 	Mise_a_jour(csv_vect, col_annee,niv_box1,niv1_val,nb_sous_niv,sous_niv_sup4, orig,niveau_top_geo,valeur_geo,num_jeux);
 	// liste_data.value=valeurSelectionnee;
-	// liste_data.text=valeurSelectionnee;	
+	// liste_data.text=valeurSelectionnee;
 }
 
 function ecouteur_liste_der_annees() {
@@ -1963,7 +1964,7 @@ function ecouteur_liste_der_annees() {
 	var valeur_geo=valeur_geo_object.dataset.valeur;
 	var tableau_geo=valeur_geo.split(".");
 	var niveau_top_geo = tableau_geo.length;
-	
+
 	var num_jeux=0;
 	if (document.querySelector('.box_niv1_unite')!=null) {
 		var niv1_unite_object = document.querySelector('.box_niv1_unite');
@@ -1974,7 +1975,7 @@ function ecouteur_liste_der_annees() {
 			}
 		}
 	}
-	
+
 	var valeur_annee = liste_der_annees.value;
 	for (i_annees=liste_jeux_donnees[0][num_jeux];i_annees<csv_vect[lig_min_data].length;i_annees++) {
 		if (csv_vect[lig_min_data][i_annees]==valeur_annee) {
@@ -1996,51 +1997,51 @@ function efface_boites() {
 }
 
 function afficherPopup(boite_click,pos_xy, source,source_lien,an_N,an_Nmoins1,an_Nmoins5,unit_N,val_N,val_Nmoins1,val_Nmoins5,absc,ordo,label_data) {
-    
+
 	if (isPopupOpen == false) {
 		var evol_Nmoins1 = ((parseFloat(val_N.replace(',','.').replace(' ','')) / parseFloat(val_Nmoins1.replace(',','.').replace(' ',''))-1)*100).toFixed(1) ;
 		var evol_Nmoins5 = ((parseFloat(val_N.replace(',','.').replace(' ','')) / parseFloat(val_Nmoins5.replace(',','.').replace(' ',''))-1)*100).toFixed(1) ;
-		
-		
+
+
 		var Popup_name="popup_data" + label_data;
 		vect_popup.push(Popup_name);
 
-			
+
 		// popup pour data, evol, source, graphe
-		
+
 		window.Popup_name = document.createElement('div');
 		window.Popup_name.style.height = '370px';// choisir une taille pour la popup
-		window.Popup_name.style.width = '300px'; 
-		window.Popup_name.style.border = '1px solid black'; // mettre un cadre autour de la popup	
+		window.Popup_name.style.width = '300px';
+		window.Popup_name.style.border = '1px solid black'; // mettre un cadre autour de la popup
 		window.Popup_name.style.top = Math.max(marge_bord-parseFloat(boite_click.style.top),- 0.5*parseFloat(window.Popup_name.style.height)) + 'px';
-		window.Popup_name.style.left =  boite_click.clientWidth + 'px';	
+		window.Popup_name.style.left =  boite_click.clientWidth + 'px';
 		window.Popup_name.style.backgroundColor = '#D9E1F2'; // choisir une couleur de fond pour la window.Popup_name
 		window.Popup_name.style.opacity = 0.95;
 		window.Popup_name.style.fontSize = '10px';
 		window.Popup_name.style.whiteSpace = "pre-wrap";
 		window.Popup_name.classList.add("premier-plan");
 		window.Popup_name.style.display = 'inline';
-		
+
 		var ligneGauche = document.createElement('p');
 		ligneGauche.style.textAlign = 'left';
 		ligneGauche.style.fontWeight = 'bold';
 		ligneGauche.innerHTML += ' VALEUR'  ;
 		window.Popup_name.appendChild(ligneGauche);
-		
+
 
 		// window.Popup_name.innerHTML += 'En ' + an_N + ' : ' +label_data + ' = ' +  data_arrondi(val_N)+ ' ' + unit_N + '<br>'+'<br>' ;
 		window.Popup_name.innerHTML += 'En ' + an_N + ' : ' + data_arrondi(val_N)+ ' ' + unit_N + '<br>'+'<br>' ;
-		
+
 		var ligneNoire = document.createElement("div");
 		ligneNoire.style.width = "100%";
 		ligneNoire.style.height = "1px";
 		ligneNoire.style.backgroundColor = "black";
 		window.Popup_name.appendChild(ligneNoire);
-		
-		
+
+
 		var ligneGauche = document.createElement('p');
-		ligneGauche.style.textAlign = 'left';	
-		ligneGauche.style.fontWeight = 'bold';		
+		ligneGauche.style.textAlign = 'left';
+		ligneGauche.style.fontWeight = 'bold';
 		ligneGauche.innerHTML += ' TENDANCE'+ '<br>';
 		window.Popup_name.appendChild(ligneGauche);
 
@@ -2054,45 +2055,45 @@ function afficherPopup(boite_click,pos_xy, source,source_lien,an_N,an_Nmoins1,an
 		} else {
 			window.Popup_name.innerHTML += '<br>' + ' - ' + Math.abs(evol_Nmoins5) + ' % vs ' + an_Nmoins5 + ' (' + data_arrondi(val_Nmoins5) + ')' +'<br>'+'<br>';
 		}
-		
+
 		window.Popup_name.appendChild(ligneNoire);
-		
+
 		ligneGauche = document.createElement('p');
-		ligneGauche.style.textAlign = 'left';	
-		ligneGauche.style.fontWeight = 'bold';		
+		ligneGauche.style.textAlign = 'left';
+		ligneGauche.style.fontWeight = 'bold';
 		ligneGauche.innerHTML += ' SOURCE'+ '<br>';
 		window.Popup_name.appendChild(ligneGauche);
-		
+
 		var texte_source = source;
 		var lien = document.createElement('a');
 		lien.href = source_lien;
 		lien.target = "_blank";
 		lien.style.cursor = "pointer";
 		lien.innerText = source; // Affiche la valeur de monLien dans le lien
-		
-		window.Popup_name.innerHTML += texte_source.replace(source,lien.outerHTML) + '<br>' + '<br>';	
-			
+
+		window.Popup_name.innerHTML += texte_source.replace(source,lien.outerHTML) + '<br>' + '<br>';
+
 		window.Popup_name.appendChild(ligneNoire);
 
 		var ligneGauche = document.createElement('p');
-		ligneGauche.style.textAlign = 'left';	
-		ligneGauche.style.fontWeight = 'bold';		
+		ligneGauche.style.textAlign = 'left';
+		ligneGauche.style.fontWeight = 'bold';
 		ligneGauche.innerHTML += ' EVOLUTION'+ '<br>';
 		window.Popup_name.appendChild(ligneGauche);
-		
+
 
 		boite_click.appendChild(window.Popup_name);
 		isPopupOpen = true;
-		
+
 		var canvas = document.createElement("canvas");
 		canvas.id = "myChart";
-		
-	
+
+
 		canvas.width =300;
 		canvas.height = 150;
-		
+
 		window.Popup_name.appendChild(canvas);
-		
+
 		var ctx = canvas.getContext('2d');
 		var myChart = new Chart(ctx, {
 			type: 'line',
@@ -2114,13 +2115,13 @@ function afficherPopup(boite_click,pos_xy, source,source_lien,an_N,an_Nmoins1,an
 				}
 			}
 		});
-		
+
 		document.addEventListener("mousedown", function(e) {
 			var box_data=window.Popup_name;
 			if (isPopupOpen  && !window.Popup_name.contains(e.target)) {
 				fonctionDeFermeture(e, window.Popup_name);
 				isPopupOpen = false;
-			}				
+			}
 		});
 	}
 }
