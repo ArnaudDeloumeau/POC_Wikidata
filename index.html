@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Site-arbre</title>
+
+        <script src="./vendor/papaparse-5.4.1.min.js"></script>
+        <script src="./vendor/chart-3.5.1.min.js"></script>
+
+        <style>
+            /* Style pour les boîtes */
+            .box_line {
+        position: absolute;
+            }
+            .box_select {
+              width: 100px;
+              height: 20px;
+        position: absolute;
+              border: 1px solid #ccc;
+              display: flex;
+              justify-content: center;  /*centre horizontalement */
+              align-items: center; /*centre verticalement */
+            }
+      .box_niv1_label {
+              width: 150px;
+              height: 40px;
+        position: absolute;
+              border: 1px solid #ccc;
+              display: flex;
+              justify-content: center;  /*centre horizontalement */
+              align-items: center; /*centre verticalement */
+            }
+            .box_niv1_value {
+              width: 150px;
+              height: 20px;
+        position: absolute;
+              border: 1px solid #ccc;
+              display: flex;
+              justify-content: center;  /*centre horizontalement */
+              align-items: center; /*centre verticalement */
+            }
+            .box_niv1_value_seul {
+              width: 50px;
+              height: 20px;
+        position: absolute;
+              border: 1px solid #ccc;
+              display: flex;
+              justify-content: center;  /*centre horizontalement */
+              align-items: center; /*centre verticalement */
+            }
+            .box_niv1_unite {
+              width: 100px;
+              height: 20px;
+        position: absolute;
+              border: 1px solid #ccc;
+              display: flex;
+              justify-content: center;  /*centre horizontalement */
+              align-items: center; /*centre verticalement */
+            }
+            .ovale_niv1 {
+              width: 180px;
+              height: 60px;
+        position: absolute;
+              border: 1px solid #ccc;
+              border-radius: 1200px / 500px;
+              border-radius: 50% / 50% ;
+              display: flex;
+              justify-content: center;  /*centre horizontalement */
+              align-items: center; /*centre verticalement */
+            }
+            .ovale_niv2 {
+              width: 140px;
+              height: 60px;
+        position: absolute;
+              border: 1px solid #ccc;
+              border-radius: 1200px / 500px;
+              border-radius: 50% / 50% ;
+              display: flex;
+              justify-content: center;  /*centre horizontalement */
+              align-items: center; /*centre verticalement */
+            }
+            .ovale_niv3 {
+              width: 60px;
+              height: 35px;
+        position: absolute;
+              border: 1px solid #ccc;
+              border-radius: 1200px / 500px;
+              border-radius: 50% / 50% ;
+              display: flex;
+              justify-content: center;  /*centre horizontalement */
+              align-items: center; /*centre verticalement */
+            }
+            .struct_niv1 {
+              width: 180px;
+              height: 90px;
+        position: absolute;
+              border: 1px solid #ccc;
+              border-radius: 1200px / 500px;
+              border-radius: 5% / 10% ;
+              display: flex;
+              justify-content: center;  /*centre horizontalement */
+              align-items: center; /*centre verticalement */
+            }
+            .struct_niv2 {
+              width: 140px;
+              height: 60px;
+        position: absolute;
+              border: 1px solid #ccc;
+              border-radius: 1200px / 500px;
+              border-radius: 5% / 10% ;
+              display: flex;
+              justify-content: center;  /*centre horizontalement */
+              align-items: center; /*centre verticalement */
+            }
+            .struct_niv3 {
+              width: 60px;
+              height: 35px;
+        position: absolute;
+              border: 1px solid #ccc;
+              border-radius: 1200px / 500px;
+              border-radius: 5% / 10% ;
+              display: flex;
+              justify-content: center;  /*centre horizontalement */
+              align-items: center; /*centre verticalement */
+            }
+            .box_niv2_label {
+              width: 150px;
+              height: 40px;
+        position: absolute;
+              border: 1px solid #ccc;
+              display: flex;
+              justify-content: center;  /*centre horizontalement */
+              align-items: center; /*centre verticalement */
+            }
+            .box_niv2_value {
+              width: 150px;
+              height: 20px;
+        position: absolute;
+              border: 1px solid #ccc;
+              display: flex;
+              justify-content: center;  /*centre horizontalement */
+              align-items: center; /*centre verticalement */
+            }
+            .box_niv3_label {
+              width: 50px;
+              height: 25px;
+        position: absolute;
+              border: 1px solid #ccc;
+              /* padding: 5px;
+              margin-bottom: 0px; */
+              display: flex;
+              justify-content: center;  /*centre horizontalement */
+              align-items: center; /*centre verticalement */
+            }
+            .box_niv3_value {
+              width: 50px;
+              height: 15px;
+        position: absolute;
+              border: 1px solid #ccc;
+              /* padding: 0px 5px 0px 5px;
+              margin-bottom: 1px; */
+              display: flex;
+              justify-content: center;  /*centre horizontalement */
+              align-items: center; /*centre verticalement */
+            }
+            .couleur_label {
+              color: dark;
+      }
+            .couleur_value {
+              color: blue;
+      }
+            .lien_niv1 {
+              width: 7px;
+              height: 7px;
+        position: absolute;
+              border: 1px solid #ccc;
+              border-radius:5px;
+        border-radius:50%;
+            }
+            .lien_niv3 {
+              width: 7px;
+              height: 7px;
+        position: absolute;
+              border: 1px solid #ccc;
+              border-radius:5px;
+        border-radius:50%;
+            }
+            .lien_niv3_carre {
+              width: 7px;
+              height: 7px;
+        position: absolute;
+              border: 1px solid #ccc;
+        border-radius:0;
+            }
+            .pop_up {
+              width: 200px;
+              height: 150px;
+        position: absolute;
+              border: 1px solid #ccc;
+              display: flex;
+              justify-content: center;  /*centre horizontalement */
+              align-items: center; /*centre verticalement */
+            }
+        .premier-plan {
+        position: absolute;
+        z-index: 9999;
+      }
+      .box_geog_niv1 {
+              width: 100px;
+              height: 30px;
+        position: absolute;
+              border: 1px solid #ccc;
+              display: flex;
+              justify-content: center;  /*centre horizontalement */
+              align-items: center; /*centre verticalement */
+            }
+      .box_geog_niv2 {
+              width: 40px;
+              height: 20px;
+        position: absolute;
+              border: 1px solid #ccc;
+              display: flex;
+              justify-content: center;  /*centre horizontalement */
+              align-items: center; /*centre verticalement */
+            }
+            .lien_niv1_geo {
+              width: 19px;
+              height: 12px;
+        position: absolute;
+        background: url(Flechehaut3.jpg) no-repeat;
+        background-size: cover;
+            }
+            .lien_niv2_geo {
+              width: 19px;
+              height: 12px;
+        position: absolute;
+        background: url(Flechebas3.jpg) no-repeat;
+        background-size: cover;
+            }
+            .lien_niv1_accueil {
+              width: 19px;
+              height: 12px;
+        position: absolute;
+        background: url(Flechehaut3.jpg) no-repeat;
+        background-size: cover;
+            }
+            .lien_niv2_accueil {
+              width: 19px;
+              height: 12px;
+        position: absolute;
+        background: url(Flechebas3.jpg) no-repeat;
+        background-size: cover;
+        position: absolute;
+            }
+            .switch_KPI_geog {
+        background: url(Fleches_switch.jpg) no-repeat;
+        background-size: cover;
+        width: 50px;
+              height: 40px;
+        position: absolute;
+            }
+      .box_texte_der {
+         height: 40px;
+         width: 150px;
+         position: absolute;
+         overflow: hidden;
+      }
+      @keyframes defilement {
+         0% { transform: translateX(0); }
+         100% { transform: translateX(-100%); }
+      }
+
+        </style>
+
+    </head>
+    <body>
+    <div id="Popup"></div>
+    <div type="file" id="monfichier"></div>
+
+    <input type="file" id="file-input" multiple>
+
+        <script src="arbre_AD_70a.js"></script>
+
+    </body>
+</html>
